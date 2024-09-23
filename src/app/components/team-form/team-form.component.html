@@ -1,0 +1,18 @@
+<form (ngSubmit)="onSubmit()">
+  <p>Cole a sua lista de pessoas aqui (cada linha representando uma pessoa):</p>
+
+  <mat-form-field>
+    <mat-label>Pessoas</mat-label>
+    <textarea
+      matInput
+      cdkTextareaAutosize
+      placeholder="Sua lista de pessoas aqui"
+      [formControl]="teamList"
+      rows="5"
+    ></textarea>
+  </mat-form-field>
+
+  <button mat-stroked-button type="submit" [disabled]="!teamList.valid">
+    Gerar times
+  </button>
+</form>
