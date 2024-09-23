@@ -1,4 +1,4 @@
-import { Component, effect } from '@angular/core';
+import { AfterViewChecked, Component, effect } from '@angular/core';
 import { teamList } from '../../signals/team.signal';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -24,13 +24,20 @@ interface ITeam {
   templateUrl: './team-list.component.html',
   styleUrl: './team-list.component.css',
 })
-export class TeamListComponent {
+export class TeamListComponent implements AfterViewChecked {
   constructor() {
     effect(() => {
       const formatedList = this.removeListNumbers(teamList());
       const shuffledList = this.shuffleList(formatedList);
 
       this.splitTeams(shuffledList);
+    });
+  }
+
+  ngAfterViewChecked(): void {
+    window.scrollTo({
+      top: document.body.scrollHeight,
+      behavior: 'smooth',
     });
   }
 
