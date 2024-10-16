@@ -1,11 +1,19 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { By } from '@angular/platform-browser';
 
 describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent],
+      imports: [AppComponent, NoopAnimationsModule],
     }).compileComponents();
+
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
   });
 
   it('should create the app', () => {
@@ -14,16 +22,18 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'team-generator' title`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('team-generator');
-  });
+  it('should only show app-team-list if hasTeamList is true', () => {
+    let appTeamList = fixture.debugElement.query(By.css('app-team-list'));
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+    expect(appTeamList).toBeNull();
+
+    component.teamListService.teamList.set('Fake team list');
+
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, team-generator');
+
+    appTeamList = fixture.debugElement.query(By.css('app-team-list'));
+
+    expect(component.hasTeamList()).toBe(true);
+    expect(appTeamList).toBeTruthy();
   });
 });

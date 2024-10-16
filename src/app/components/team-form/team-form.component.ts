@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormControl } from '@angular/forms';
-import { teamList } from '../../signals/team.signal';
+import { TeamListService } from '../../services/team-list.service';
 
 @Component({
   selector: 'app-team-form',
@@ -21,15 +21,11 @@ import { teamList } from '../../signals/team.signal';
   styleUrl: './team-form.component.css',
 })
 export class TeamFormComponent {
+  teamListService = inject(TeamListService);
+
   teamList = new FormControl('', Validators.required);
 
   onSubmit() {
-    const list = this.textToArray(this.teamList.value?.trim() as string);
-
-    teamList.set(list);
-  }
-
-  textToArray(text: string) {
-    return text.split('\n');
+    this.teamListService.teamList.set(this.teamList.value as string);
   }
 }

@@ -1,8 +1,8 @@
-import { Component, effect } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TeamFormComponent } from './components/team-form/team-form.component';
 import { TeamListComponent } from './components/team-list/team-list.component';
-import { teamList } from './signals/team.signal';
+import { TeamListService } from './services/team-list.service';
 
 @Component({
   selector: 'app-root',
@@ -12,11 +12,7 @@ import { teamList } from './signals/team.signal';
   styleUrl: './app.component.css',
 })
 export class AppComponent {
-  teamList = teamList();
+  teamListService = inject(TeamListService);
 
-  constructor() {
-    effect(() => {
-      this.teamList = teamList();
-    });
-  }
+  hasTeamList = this.teamListService.hasTeamList;
 }
